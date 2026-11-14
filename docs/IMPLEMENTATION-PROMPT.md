@@ -26,7 +26,8 @@ A single, fast, credible site whose only business job is converting visitors int
 
 ### Placeholders (replace everywhere they appear)
 - Consultant display name: Bhugol <LASTNAME> (brand: Bhugol Lab)
-- Contact email: hi@bhugol.dev
+- Contact email: <PERSONAL EMAIL, e.g. yourname@gmail.com> (no custom-domain mailbox at launch)
+- Lead notifications: send to the same personal email
 - Booking link: <CAL.COM OR CALENDLY URL>
 - GitHub: github.com/<HANDLE>
 - LinkedIn: linkedin.com/in/<HANDLE>
@@ -44,7 +45,7 @@ A single, fast, credible site whose only business job is converting visitors int
 5. Commit in small Conventional Commits (`feat:`, `fix:`, `chore:`, `docs:`, `test:`). Suggested sequence: `chore: initialize repository` -> `feat: base layout and homepage` -> `feat: services and hire pages` -> `feat: work/case study pages` -> `feat: blog with markdown content` -> `feat: contact form with persistence and email` -> `feat: seo, sitemap, structured data` -> `test: smoke tests` -> `chore: docker and ci`.
 6. Create the remote with GitHub CLI if available: `gh repo create bhugol-lab --private --source=. --push`. If `gh` is unavailable, print the exact `git remote add origin ...` and `git push -u origin main` commands for me to run, and stop there.
 7. Never commit secrets, connection strings, API keys, or certificates. Use `dotnet user-secrets` locally and environment variables in production. Commit an `appsettings.Example.json` and `.env.example` with empty values only.
-8. Add a `docs/` note listing the DNS and email records I must create manually (SPF, DKIM, DMARC, A/CNAME, `www` redirect).
+8. Add a `docs/` note listing the DNS records I must create manually (A/CNAME, `www` redirect) and the optional email records for later. Do not assume a custom-domain mailbox exists.
 
 ### Step 2 — Naming, layout, and project structure
 
@@ -118,7 +119,8 @@ Brand usage: the header wordmark is **Bhugol Lab**; the homepage hero and footer
 - Rate limit the contact endpoint: 3 requests per 10 minutes per IP, plus a global limiter.
 - EF Core: `EnableRetryOnFailure(3, TimeSpan.FromSeconds(2), null)`; migrations applied explicitly (no `EnsureCreated()`); `Lead` entity with Id, Name, Email, Company, Message, Source, Referrer, CreatedAt, Status.
 - Support SQL Server via connection string; use `Authentication=Active Directory Default` if configured, otherwise fall back to a connection string from user-secrets/env. Include SQLite as a local-development fallback so the project runs without SQL Server installed.
-- `IEmailSender` abstraction with two implementations: Resend/SMTP, and a no-op logger for local dev. Never send email inline on the request thread without a timeout.
+- `IEmailSender` abstraction with two implementations: SMTP (Gmail app password in development and at launch, configurable to Resend/Brevo later via config only) and a no-op logger for tests. Never send email inline on the request thread without a timeout, and never let a failed notification lose the lead — persist first, then notify.
+- Email is optional infrastructure: if `Email:Provider` is empty or `noop`, the contact form must still succeed and the lead must still be listed in `/admin/leads`.
 - Security headers middleware: HSTS, `X-Content-Type-Options`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`, and a CSP that allows only what the site uses (self, plus your analytics and Cal.com embed if used).
 - Add `/healthz` returning 200 and a `/robots.txt` that disallows `/admin`.
 - Structured logging; log every lead submission (id only, no message body) and every email failure.
@@ -163,7 +165,9 @@ Brand usage: the header wordmark is **Bhugol Lab**; the homepage hero and footer
 
 ## Notes before you paste
 
-- **Must fill in:** niche/ICP, package names + price ranges, booking link, GitHub/LinkedIn handles, hosting target. The homepage and `/hire` copy depend on the first two.
+- **Must fill in:** personal email, niche/ICP, package names + price ranges, booking link, GitHub/LinkedIn handles, hosting target. The homepage and `/hire` copy depend on the niche and prices.
+- **Email is deliberately minimal at launch:** use a personal email (e.g. Gmail) as the public contact address and as the lead-notification recipient. No custom-domain mailbox, no mailbox subscription, no SPF/DKIM/DMARC yet. Sending uses Gmail SMTP with an app password stored in user-secrets/env. The `IEmailSender` abstraction must keep a later switch to Resend/Brevo or a real `hi@bhugol.dev` mailbox a config-only change.
+- **Free upgrade path, documented but not implemented:** Cloudflare Email Routing can receive `hi@bhugol.dev` and forward to Gmail at $0, and Resend can send from a verified domain without a mailbox. Add it only when replies from the branded address start mattering.
 - **If you don't have a niche yet:** tell the new chat to use `TODO:` placeholders for the ICP and prices, and build everything else around them.
 - **Naming already decided:** brand **Bhugol Lab**, repo `bhugol-lab`, solution `BhugolLab`, project `BhugolLab.Web`, namespace `BhugolLab.Web`.
 - **Domain decisions already made:** canonical site on `bhugol.dev` (apex), `www` 301s to apex. Marketing pages on paths, not subdomains. `bhugol.com` is held by someone else and `bhugollabs.com` is taken — don't pursue either.

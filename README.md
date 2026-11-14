@@ -65,7 +65,8 @@ Never commit secrets. Locally:
 cd src/BhugolLab.Web
 dotnet user-secrets init
 dotnet user-secrets set "ConnectionStrings:Default" "Server=(localdb)\MSSQLLocalDB;Database=BhugolLab;Trusted_Connection=True;"
-dotnet user-secrets set "Email:ApiKey" "<resend-or-smtp-key>"
+dotnet user-secrets set "Email:Smtp:Username" "<personal-email@gmail.com>"
+dotnet user-secrets set "Email:Smtp:Password" "<gmail-app-password>"
 ```
 
 In production, set the same keys as environment variables (`ConnectionStrings__Default`,
@@ -76,10 +77,12 @@ Settings that must exist (document every new one here):
 | Key | Purpose |
 |---|---|
 | `ConnectionStrings:Default` | SQL Server connection string; falls back to SQLite when empty |
-| `Email:Provider` | `noop` locally, `resend` or `smtp` in production |
-| `Email:ApiKey` | Provider API key |
-| `Email:FromAddress` | e.g. `hi@bhugol.dev` |
-| `Email:ToAddress` | where lead notifications go |
+| `Email:Provider` | `noop` locally, `smtp` in production (later: `resend`) |
+| `Email:Smtp:Host` / `Port` | `smtp.gmail.com` / `587` (STARTTLS) |
+| `Email:Smtp:Username` | personal Gmail address |
+| `Email:Smtp:Password` | Gmail **app password**, never the account password |
+| `Email:FromAddress` | personal email (used as the notification sender) |
+| `Email:ToAddress` | personal email (where lead notifications land) |
 | `Admin:Username` / `Admin:PasswordHash` | access to `/admin/leads` |
 | `Site:BaseUrl` | canonical URL, used for absolute links and sitemap |
 
