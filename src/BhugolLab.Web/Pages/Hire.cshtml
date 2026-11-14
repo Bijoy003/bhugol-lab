@@ -1,9 +1,96 @@
 @page
+@using BhugolLab.Web.Options
+@using Microsoft.Extensions.Options
+@inject IOptions<SiteOptions> SiteOptionsAccessor
 @{
+    var site = SiteOptionsAccessor.Value;
     ViewData["Title"] = "hire Bhugol Lab";
-    ViewData["Description"] = "Work with Bhugol Lab: one offer, one price range, and the most relevant case studies.";
+    ViewData["Description"] = "TODO: one-sentence offer for the outreach audience — " +
+        "what gets built and what changes for them.";
 }
+
 <div class="page-narrow">
-    <h1>Hire me</h1>
-    <p class="lead">TODO: cold-outreach landing page — one audience, one offer, one price range, 2–3 case studies, one CTA.</p>
+    <p class="eyebrow">For <span class="todo">TODO: the one audience this outreach targets</span></p>
+    <h1><span class="todo">TODO: offer headline — the concrete outcome for that audience</span></h1>
+    <p class="lead">
+        <span class="todo">TODO: 2–3 sentences. The problem they have today, what you build,
+        and what is different afterwards. Written for one audience only.</span>
+    </p>
 </div>
+
+<section class="section" aria-labelledby="offer-heading">
+    <h2 id="offer-heading" class="section-title">The offer</h2>
+    <div class="grid grid-2">
+        <article class="card">
+            <h3><span class="todo">TODO: offer name — one offer, not a menu</span></h3>
+            <p class="price"><span class="todo">TODO: single price range</span></p>
+            <p class="card-meta">Timeline: <span class="todo">TODO</span></p>
+            <p><strong>What you get</strong></p>
+            <ul class="check-list">
+                <li><span class="todo">TODO: deliverable</span></li>
+                <li><span class="todo">TODO: deliverable</span></li>
+                <li><span class="todo">TODO: deliverable</span></li>
+                <li><span class="todo">TODO: deliverable</span></li>
+            </ul>
+            <p><strong>What you don't get</strong></p>
+            <ul class="cross-list">
+                <li><span class="todo">TODO: exclusion — e.g. no junior hand-offs</span></li>
+                <li><span class="todo">TODO: exclusion — e.g. no open-ended hourly billing</span></li>
+            </ul>
+        </article>
+        <article class="card">
+            <h3>Why this works</h3>
+            <p>
+                <span class="todo">TODO: 3–4 sentences of honest reasoning — why a fixed-scope
+                engagement with one senior engineer beats the alternatives for this audience.
+                No invented metrics.</span>
+            </p>
+            <p class="muted">
+                <span class="todo">TODO: one sentence on what happens if the project is not a fit
+                (you'll say so on the first call).</span>
+            </p>
+        </article>
+    </div>
+</section>
+
+<section class="section" aria-labelledby="proof-heading">
+    <h2 id="proof-heading" class="section-title">Relevant work</h2>
+    <ul class="post-list">
+        <li>
+            <h3><a asp-page="/Work/Index"><span class="todo">TODO: case study 1 title</span></a></h3>
+            <p class="post-meta"><span class="todo">TODO: sector / stack</span></p>
+            <p><span class="todo">TODO: one-line problem → outcome.</span></p>
+        </li>
+        <li>
+            <h3><a asp-page="/Work/Index"><span class="todo">TODO: case study 2 title</span></a></h3>
+            <p class="post-meta"><span class="todo">TODO: sector / stack</span></p>
+            <p><span class="todo">TODO: one-line problem → outcome.</span></p>
+        </li>
+        <li>
+            <h3><a asp-page="/Work/Index"><span class="todo">TODO: case study 3 title</span></a></h3>
+            <p class="post-meta"><span class="todo">TODO: sector / stack</span></p>
+            <p><span class="todo">TODO: one-line problem → outcome.</span></p>
+        </li>
+    </ul>
+</section>
+
+<section class="section" aria-label="Book a call">
+    <div class="section-cta">
+        <h2>Book a 30-minute call</h2>
+        <p class="muted">
+            <span class="todo">TODO: what happens on the call — scope, fit, and a fixed-price
+            proposal within a few days. No obligation.</span>
+        </p>
+        <div class="hero-actions">
+            @if (string.IsNullOrWhiteSpace(site.BookingUrl) || site.BookingUrl.Contains("TODO", StringComparison.OrdinalIgnoreCase))
+            {
+                <a class="button button-primary" asp-page="/Contact">Book a call</a>
+                <p class="small muted mt-0">TODO: booking link not configured yet — this CTA goes to the contact form.</p>
+            }
+            else
+            {
+                <a class="button button-primary" href="@site.BookingUrl" rel="noopener">Book a call</a>
+            }
+        </div>
+    </div>
+</section>

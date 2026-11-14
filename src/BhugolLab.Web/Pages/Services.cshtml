@@ -1,9 +1,116 @@
 @page
+@using BhugolLab.Web.Options
+@using Microsoft.Extensions.Options
+@inject IOptions<SiteOptions> SiteOptionsAccessor
 @{
+    var site = SiteOptionsAccessor.Value;
     ViewData["Title"] = "services and packages";
-    ViewData["Description"] = "Consulting packages from Bhugol Lab: what is included, what is not, price ranges and timelines.";
+    ViewData["Description"] = "Consulting packages from Bhugol Lab: what is included, what is not, " +
+        "price ranges, timelines and who each package is for.";
 }
+
 <div class="page-narrow">
     <h1>Services</h1>
-    <p class="lead">TODO: 2–3 packages — what's included, what's not, price range, timeline, and who each package is for.</p>
+    <p class="lead">
+        <span class="todo">TODO: one sentence — how you work and what clients get
+        (fixed scope, fixed price range, senior engineer, no hand-offs).</span>
+    </p>
 </div>
+
+<section class="section" aria-label="Packages">
+    <div class="grid grid-3">
+        <article class="card">
+            <h3><span class="todo">TODO: package 1 name</span></h3>
+            <p class="price"><span class="todo">TODO: price range</span></p>
+            <p class="card-meta">
+                Timeline: <span class="todo">TODO</span> ·
+                For: <span class="todo">TODO: audience</span>
+            </p>
+            <p class="muted"><span class="todo">TODO: one-line summary of the outcome.</span></p>
+            <p><strong>Included</strong></p>
+            <ul class="check-list">
+                <li><span class="todo">TODO: deliverable</span></li>
+                <li><span class="todo">TODO: deliverable</span></li>
+                <li><span class="todo">TODO: deliverable</span></li>
+            </ul>
+            <p><strong>Not included</strong></p>
+            <ul class="cross-list">
+                <li><span class="todo">TODO: exclusion</span></li>
+                <li><span class="todo">TODO: exclusion</span></li>
+            </ul>
+        </article>
+
+        <article class="card">
+            <h3><span class="todo">TODO: package 2 name</span></h3>
+            <p class="price"><span class="todo">TODO: price range</span></p>
+            <p class="card-meta">
+                Timeline: <span class="todo">TODO</span> ·
+                For: <span class="todo">TODO: audience</span>
+            </p>
+            <p class="muted"><span class="todo">TODO: one-line summary of the outcome.</span></p>
+            <p><strong>Included</strong></p>
+            <ul class="check-list">
+                <li><span class="todo">TODO: deliverable</span></li>
+                <li><span class="todo">TODO: deliverable</span></li>
+                <li><span class="todo">TODO: deliverable</span></li>
+            </ul>
+            <p><strong>Not included</strong></p>
+            <ul class="cross-list">
+                <li><span class="todo">TODO: exclusion</span></li>
+                <li><span class="todo">TODO: exclusion</span></li>
+            </ul>
+        </article>
+
+        <article class="card">
+            <h3><span class="todo">TODO: package 3 name (or drop this card)</span></h3>
+            <p class="price"><span class="todo">TODO: price range</span></p>
+            <p class="card-meta">
+                Timeline: <span class="todo">TODO</span> ·
+                For: <span class="todo">TODO: audience</span>
+            </p>
+            <p class="muted"><span class="todo">TODO: one-line summary of the outcome.</span></p>
+            <p><strong>Included</strong></p>
+            <ul class="check-list">
+                <li><span class="todo">TODO: deliverable</span></li>
+                <li><span class="todo">TODO: deliverable</span></li>
+                <li><span class="todo">TODO: deliverable</span></li>
+            </ul>
+            <p><strong>Not included</strong></p>
+            <ul class="cross-list">
+                <li><span class="todo">TODO: exclusion</span></li>
+                <li><span class="todo">TODO: exclusion</span></li>
+            </ul>
+        </article>
+    </div>
+</section>
+
+<section class="section" aria-labelledby="how-heading">
+    <h2 id="how-heading" class="section-title">How we work together</h2>
+    <div class="page-narrow">
+        <ol>
+            <li><span class="todo">TODO: step 1 — e.g. free 30-minute call to scope the problem.</span></li>
+            <li><span class="todo">TODO: step 2 — fixed-price proposal within X days.</span></li>
+            <li><span class="todo">TODO: step 3 — build in weekly increments, demo every Friday.</span></li>
+            <li><span class="todo">TODO: step 4 — handover: code, docs, and a support window.</span></li>
+        </ol>
+    </div>
+</section>
+
+<section class="section" aria-label="Next step">
+    <div class="section-cta">
+        <h2>Not sure which package fits?</h2>
+        <p class="muted">Describe the problem in a few sentences — you'll get a straight answer,
+        including "you don't need me for this".</p>
+        <div class="hero-actions">
+            @if (string.IsNullOrWhiteSpace(site.BookingUrl) || site.BookingUrl.Contains("TODO", StringComparison.OrdinalIgnoreCase))
+            {
+                <a class="button button-primary" asp-page="/Contact">Start a conversation</a>
+            }
+            else
+            {
+                <a class="button button-primary" href="@site.BookingUrl" rel="noopener">Book a call</a>
+            }
+            <a class="button button-ghost" asp-page="/Work/Index">See past work</a>
+        </div>
+    </div>
+</section>
