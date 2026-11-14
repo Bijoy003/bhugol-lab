@@ -4,7 +4,8 @@ Target: **https://bhugol.dev** (apex is canonical; `www` 301s to it).
 
 ## 1. Host
 
-Pick one and co-locate the database with it:
+Pick a host. The database is **SQL Server** in every case — Azure SQL (free tier) or
+any instance the host can reach; SQLite is the local-dev fallback only:
 
 | Option | Notes |
 |---|---|

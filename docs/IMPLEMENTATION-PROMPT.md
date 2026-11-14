@@ -85,7 +85,7 @@ dotnet add tests/BhugolLab.Web.Tests reference src/BhugolLab.Web
 Create a single web project, `BhugolLab.Web`, with this shape:
 
 - `Program.cs`
-- `Pages/` — `Index`, `Hire`, `Services`, `Contact`, `ContactThanks`, `Privacy`, `NotFound`, plus `Work/Index`, `Work/Detail`, `Blog/Index`, `Blog/Post`, `Blog/Tag`, `Admin/Leads`
+- `Pages/` — `Index`, `Hire`, `Services`, `Contact`, `ContactThanks`, `Privacy`, `NotFound`, plus `Work/Index`, `Work/Detail`, `Blog/Index`, `Blog/Post`, `Blog/Tag`, `Admin/Login`, `Admin/Leads`
 - `Content/posts/*.md` — blog source with YAML front matter (title, description, date, tags, draft)
 - `Services/` — `MarkdownService`, `IEmailSender` + `EmailSender` (Resend or SMTP), `ILeadStore` + `EfLeadStore`
 - `Data/` — `AppDbContext`, `Lead` entity, migrations
@@ -109,14 +109,14 @@ Brand usage: the header wordmark is **Bhugol Lab**; the homepage hero and footer
 
 **`/contact`** — form with name, email, company (optional), message, honeypot field, and hidden UTM fields. Server-side validation, antiforgery token, accessible error messages. On success: redirect to `/contact/thanks` (which fires no analytics conversion on refresh) and send me an email notification.
 
-**`/admin/leads`** — behind auth, simple table of leads sorted by date with a status dropdown. Keep it minimal; cookie auth with a single admin user seeded from configuration is acceptable.
+**`/admin/login`** and **`/admin/leads`** — cookie auth with a single admin user seeded from configuration. The login page is a username/password form with server-side validation, antiforgery, and accessible error messages; logout is a POST action. `/admin/leads` is a simple table of leads sorted by date with a status dropdown. Keep it minimal.
 
 **`/privacy`** — plain-language privacy note covering the form data, analytics, and retention.
 
 ### Step 4 — Technical requirements
 - Middleware order matters: `UseForwardedHeaders()` before `UseHttpsRedirection()`, `UseRateLimiter()`, and any IP-based logic. The app runs behind Cloudflare, so forwarded headers must be honored or rate limiting will treat all traffic as one client.
 - Output caching on anonymous GET page requests (5–10 min). Do not cache POSTs, `/admin`, or `/contact/thanks`. Never render a page from a database query.
-- Rate limit the contact endpoint: 3 requests per 10 minutes per IP, plus a global limiter.
+- Rate limit the contact endpoint: 3 requests per 10 minutes per IP, and the admin login POST: 5 requests per 10 minutes per IP, plus a global limiter.
 - EF Core: `EnableRetryOnFailure(3, TimeSpan.FromSeconds(2), null)`; migrations applied explicitly (no `EnsureCreated()`); `Lead` entity with Id, Name, Email, Company, Message, Source, Referrer, CreatedAt, Status.
 - Support SQL Server via connection string; use `Authentication=Active Directory Default` if configured, otherwise fall back to a connection string from user-secrets/env. Include SQLite as a local-development fallback so the project runs without SQL Server installed.
 - `IEmailSender` abstraction with two implementations: SMTP (host/port/credentials via config; switchable to Resend/Brevo via config only) and a no-op logger for tests. Never send email inline on the request thread without a timeout, and never let a failed notification lose the lead — persist first, then notify.
@@ -137,7 +137,7 @@ Brand usage: the header wordmark is **Bhugol Lab**; the homepage hero and footer
 - Self-host fonts or use system fonts; no render-blocking third-party CSS.
 
 ### Step 6 — Tests
-- xUnit integration tests using `WebApplicationFactory`: homepage returns 200, `/hire` returns 200, contact POST with invalid data returns validation errors, contact POST with valid data persists a lead and returns redirect, `/admin/leads` requires auth, rate limiter returns 429 after the limit.
+- xUnit integration tests using `WebApplicationFactory`: homepage returns 200, `/hire` returns 200, contact POST with invalid data returns validation errors, contact POST with valid data persists a lead and returns redirect, `/admin/leads` requires auth, `/admin/login` POST with valid credentials authenticates and redirects, rate limiters return 429 after the limit (contact and login).
 - One Playwright smoke test (optional if it complicates setup): load `/`, submit the form, assert the thanks page.
 
 ### Step 7 — Deployment artefacts
@@ -172,5 +172,5 @@ Brand usage: the header wordmark is **Bhugol Lab**; the homepage hero and footer
 - **Naming already decided:** brand **Bhugol Lab**, repo `bhugol-lab`, solution `BhugolLab`, project `BhugolLab.Web`, namespace `BhugolLab.Web`.
 - **Domain decisions already made:** canonical site on `bhugol.dev` (apex), `www` 301s to apex. Marketing pages on paths, not subdomains. `bhugol.com` is held by someone else and `bhugollabs.com` is taken — don't pursue either.
 - **Stack decisions already made:** single Razor Pages project, .NET 10, Markdig, EF Core + SQL Server (SQLite fallback locally), Docker, Cloudflare DNS/CDN.
-- **Hosting:** pick one and co-locate the database with it. Azure App Service/Container Apps + Azure SQL free tier, or Fly.io + Neon Postgres.
+- **Hosting:** the database is SQL Server in every deployment (SQLite is a local-dev fallback only). Azure App Service/Container Apps + Azure SQL free tier, or any Docker host + a SQL Server instance the host can reach.
 - **Placeholder hygiene:** the "no fabricated content" rule is deliberate. Do not let the agent invent client names, metrics, or testimonials.
