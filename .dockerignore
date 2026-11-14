@@ -1,0 +1,15 @@
+**/bin/
+**/obj/
+**/App_Data/
+**/*.db
+**/*.db-shm
+**/*.db-wal
+**/.vs/
+**/.idea/
+.env
+.env.*
+.git/
+.gitignore
+.github/
+docs/
+README.md

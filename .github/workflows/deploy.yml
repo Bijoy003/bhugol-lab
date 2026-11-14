@@ -1,0 +1,49 @@
+name: deploy
+
+on:
+  push:
+    branches: [main]
+
+# TODO: hosting target is not decided yet (see docs/deployment.md).
+# This workflow builds the image and pushes it to a container registry; the host
+# then pulls it. If the target becomes Azure App Service with a publish profile,
+# replace the registry steps with azure/webapps-deploy using the
+# AZUREAPPSERVICE_PUBLISHPROFILE secret.
+#
+# Required repository secrets:
+#   REGISTRY_URL       e.g. ghcr.io or an ACR login server
+#   REGISTRY_USERNAME
+#   REGISTRY_PASSWORD
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Test before deploy
+        run: |
+          dotnet restore
+          dotnet build --no-restore -c Release
+          dotnet test --no-build -c Release
+
+      - name: Log in to registry
+        run: >
+          echo "${{ secrets.REGISTRY_PASSWORD }}" |
+          docker login "${{ secrets.REGISTRY_URL }}"
+          --username "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
+
+      - name: Build and push image
+        run: |
+          IMAGE="${{ secrets.REGISTRY_URL }}/bhugol-lab"
+          docker build -t "$IMAGE:${{ github.sha }}" -t "$IMAGE:latest" .
+          docker push "$IMAGE:${{ github.sha }}"
+          docker push "$IMAGE:latest"
+
+      # TODO: trigger the host to pull the new tag (webhook, ssh restart,
+      # App Service deployment, Fly release, ...).
