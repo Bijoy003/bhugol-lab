@@ -76,7 +76,7 @@ Settings that must exist (document every new one here):
 
 | Key | Purpose |
 |---|---|
-| `ConnectionStrings:Default` | SQL Server connection string; falls back to SQLite when empty |
+| `ConnectionStrings:Default` | SQL Server connection string; empty → SQLite file under `App_Data/`; contains `Data Source` → SQLite with that string |
 | `Email:Provider` | `noop` locally, `smtp` or `resend` in production |
 | `Email:Smtp:Host` / `Port` | SMTP host and port (`587` with STARTTLS is the usual default) |
 | `Email:Smtp:Username` | SMTP username for the configured provider |
@@ -97,7 +97,35 @@ dotnet ef migrations add <Name> --project src/BhugolLab.Web
 dotnet ef database update --project src/BhugolLab.Web
 ```
 
-Migrations are applied explicitly. `EnsureCreated()` is not used.
+Migrations are applied explicitly at startup (`Database.Migrate()`); `EnsureCreated()`
+is not used. Migrations are scaffolded against SQL Server (see
+`Data/DesignTimeDbContextFactory`) and are shaped to apply cleanly on SQLite too
+(Guid key, explicit max lengths), so the local fallback needs no extra setup.
+On SQLite the `PendingModelChangesWarning` is suppressed by design — the snapshot is
+SQL Server's; forgotten model changes still surface on SQL Server and via
+`dotnet ef migrations has-pending-model-changes`.
+
+## Admin access
+
+`/admin/leads` uses cookie authentication with a single user from configuration.
+Generate the password hash:
+
+```powershell
+dotnet run --project src/BhugolLab.Web -- hash-password "<password>"
+```
+
+Store the result in `Admin:PasswordHash` (user-secrets locally, environment variables
+in production). While unconfigured, every login attempt fails and is logged.
+
+## Rate limits and caching
+
+- Contact form POST: 3 requests / 10 min per client IP. Admin login POST: 5 / 10 min per IP. Global limiter: 120 / min per IP.
+- Anonymous GETs of content pages are output-cached for 5 minutes. Pages with forms
+  (`/contact`, `/hire`), `/admin/*` and `/contact/thanks` are never cached, because
+  form pages embed per-visitor antiforgery tokens.
+- The app runs behind Cloudflare: the real client IP is taken from `CF-Connecting-IP`
+  (set and overwritten at the edge), so the origin must accept traffic from
+  Cloudflare only — see `docs/deployment.md`.
 
 ## Adding a blog post
 

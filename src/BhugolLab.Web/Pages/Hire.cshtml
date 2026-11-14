@@ -84,8 +84,8 @@
         <div class="hero-actions">
             @if (string.IsNullOrWhiteSpace(site.BookingUrl) || site.BookingUrl.Contains("TODO", StringComparison.OrdinalIgnoreCase))
             {
-                <a class="button button-primary" asp-page="/Contact">Book a call</a>
-                <p class="small muted mt-0">TODO: booking link not configured yet — this CTA goes to the contact form.</p>
+                <a class="button button-primary" href="#message">Book a call</a>
+                <p class="small muted mt-0">TODO: booking link not configured yet — this CTA jumps to the form below.</p>
             }
             else
             {
@@ -94,3 +94,18 @@
         </div>
     </div>
 </section>
+
+<section class="section" aria-labelledby="message-heading">
+    <h2 id="message-heading" class="section-title">Prefer writing?</h2>
+    <p class="section-subtitle">
+        The form carries the campaign parameters of the message that brought you here,
+        so replies land with their context.
+    </p>
+    <div class="page-narrow" id="message">
+        <partial name="_ContactForm" model="new BhugolLab.Web.Models.ContactInput()" />
+    </div>
+</section>
+
+@section Scripts {
+    <script src="~/js/lead-source.js" asp-append-version="true"></script>
+}

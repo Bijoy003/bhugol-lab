@@ -1,0 +1,21 @@
+@page "/contact/thanks"
+@{
+    ViewData["Title"] = "message received";
+    ViewData["Description"] = "Your message reached Bhugol Lab.";
+    // Deliberately no analytics or conversion beacon here (or anywhere): reloading this
+    // page after a redirect must not double-count anything. Traffic is read from
+    // Cloudflare zone analytics, server-side.
+}
+
+<div class="page-narrow">
+    <h1>Thanks — your message is in.</h1>
+    <div class="form-status-success">
+        <p class="mt-0">
+            I read every message myself and reply within one business day, usually faster.
+        </p>
+    </div>
+    <p>
+        While you wait: <a asp-page="/Work/Index">recent case studies</a> or
+        <a asp-page="/Blog/Index">the blog</a>.
+    </p>
+</div>

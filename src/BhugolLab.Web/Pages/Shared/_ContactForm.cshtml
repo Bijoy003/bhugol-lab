@@ -1,0 +1,45 @@
+@model BhugolLab.Web.Models.ContactInput
+<form method="post" action="/contact">
+    @* Explicit token: the Form Tag Helper does not emit one inside partial views. *@
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="validation-summary-errors" role="alert"></div>
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" autocomplete="name" aria-describedby="name-error" />
+        <span id="name-error" class="field-validation-error" asp-validation-for="Name"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" type="email" autocomplete="email" aria-describedby="email-error" />
+        <span id="email-error" class="field-validation-error" asp-validation-for="Email"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Company"></label>
+        <input asp-for="Company" autocomplete="organization" aria-describedby="company-error" />
+        <span id="company-error" class="field-validation-error" asp-validation-for="Company"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Message"></label>
+        <span class="form-hint" id="message-hint">What are you trying to build or fix? Rough scope and timing help.</span>
+        <textarea asp-for="Message" aria-describedby="message-hint message-error"></textarea>
+        <span id="message-error" class="field-validation-error" asp-validation-for="Message"></span>
+    </div>
+
+    @* Honeypot: off-screen, unfocusable, hidden from assistive technology. *@
+    <div class="hp-field" aria-hidden="true">
+        <label asp-for="Website"></label>
+        <input asp-for="Website" tabindex="-1" autocomplete="off" />
+    </div>
+
+    @* Lead source, filled by lead-source.js from the URL and document.referrer. *@
+    <input type="hidden" asp-for="UtmSource" data-utm="utm_source" />
+    <input type="hidden" asp-for="UtmMedium" data-utm="utm_medium" />
+    <input type="hidden" asp-for="UtmCampaign" data-utm="utm_campaign" />
+    <input type="hidden" asp-for="Referrer" data-utm="referrer" />
+
+    <button type="submit" class="button button-primary">Send message</button>
+</form>

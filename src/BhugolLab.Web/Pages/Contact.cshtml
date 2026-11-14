@@ -1,9 +1,20 @@
 @page
+@model BhugolLab.Web.Pages.ContactModel
 @{
     ViewData["Title"] = "contact";
-    ViewData["Description"] = "Get in touch with Bhugol Lab about your project.";
+    ViewData["Description"] = "Get in touch with Bhugol Lab about your project. One form, a real reply, no newsletter.";
 }
+
 <div class="page-narrow">
     <h1>Contact</h1>
-    <p class="lead">TODO: the contact form (name, email, company, message) will live here.</p>
+    <p class="lead">
+        Describe the problem in a few sentences — you'll get a straight reply,
+        including "you don't need me for this".
+    </p>
+
+    <partial name="_ContactForm" model="Model.Input" />
 </div>
+
+@section Scripts {
+    <script src="~/js/lead-source.js" asp-append-version="true"></script>
+}
