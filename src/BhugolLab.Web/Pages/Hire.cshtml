@@ -1,5 +1,6 @@
 @page
 @using BhugolLab.Web.Options
+@using BhugolLab.Web.Services
 @using Microsoft.Extensions.Options
 @inject IOptions<SiteOptions> SiteOptionsAccessor
 @{
@@ -7,6 +8,23 @@
     ViewData["Title"] = "hire Bhugol Lab";
     ViewData["Description"] = "TODO: one-sentence offer for the outreach audience — " +
         "what gets built and what changes for them.";
+
+    var sameAs = new List<string>();
+    if (!SiteOptions.IsPlaceholder(site.GitHubUrl))
+    {
+        sameAs.Add(site.GitHubUrl);
+    }
+
+    if (!SiteOptions.IsPlaceholder(site.LinkedInUrl))
+    {
+        sameAs.Add(site.LinkedInUrl);
+    }
+
+    ViewData["JsonLd"] = StructuredData.ProfessionalService(
+        "Bhugol Lab",
+        site.BaseUrl.TrimEnd('/') + "/hire",
+        "Hire Bhugol Lab: one fixed-scope offer for " + site.AuthorName + "'s outreach audience.",
+        sameAs);
 }
 
 <div class="page-narrow">

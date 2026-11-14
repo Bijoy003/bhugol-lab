@@ -25,4 +25,8 @@ public sealed class SiteOptions
 
     /// <summary>City and timezone the consultant works from, shown in the footer and about section.</summary>
     public string Location { get; set; } = string.Empty;
+
+    /// <summary>True when a configured value is still an unfilled placeholder.</summary>
+    public static bool IsPlaceholder(string? value) =>
+        string.IsNullOrWhiteSpace(value) || value.Contains("TODO", StringComparison.OrdinalIgnoreCase);
 }

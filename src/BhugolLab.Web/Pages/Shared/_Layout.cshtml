@@ -51,6 +51,12 @@
     <link rel="icon" type="image/png" href="~/img/icon.png" />
     <link rel="alternate" type="application/rss+xml" title="Bhugol Lab blog" href="@baseUrl/rss.xml" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @if (ViewData["JsonLd"] is string jsonLd && jsonLd.Length > 0)
+    {
+        @* Raw on purpose: the JSON is escaped by System.Text.Json (including < as \u003C),
+           and Razor would otherwise HTML-encode the "+" in the MIME type. *@
+        @Html.Raw("<script type=\"application/ld+json\">" + jsonLd + "</script>")
+    }
     @await RenderSectionAsync("Head", required: false)
 </head>
 <body>

@@ -1,0 +1,7 @@
+@page "/sitemap.xml"
+@model BhugolLab.Web.Pages.SitemapModel
+@{
+    Layout = null;
+    Response.ContentType = "application/xml; charset=utf-8";
+}
+@Html.Raw(Model.Xml)

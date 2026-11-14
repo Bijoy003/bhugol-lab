@@ -1,5 +1,6 @@
 @page
 @using BhugolLab.Web.Options
+@using BhugolLab.Web.Services
 @using Microsoft.Extensions.Options
 @inject IOptions<SiteOptions> SiteOptionsAccessor
 @{
@@ -7,6 +8,23 @@
     ViewData["Title"] = "services and packages";
     ViewData["Description"] = "Consulting packages from Bhugol Lab: what is included, what is not, " +
         "price ranges, timelines and who each package is for.";
+
+    var sameAs = new List<string>();
+    if (!SiteOptions.IsPlaceholder(site.GitHubUrl))
+    {
+        sameAs.Add(site.GitHubUrl);
+    }
+
+    if (!SiteOptions.IsPlaceholder(site.LinkedInUrl))
+    {
+        sameAs.Add(site.LinkedInUrl);
+    }
+
+    ViewData["JsonLd"] = StructuredData.ProfessionalService(
+        "Bhugol Lab",
+        site.BaseUrl.TrimEnd('/') + "/services",
+        "Fixed-scope software consulting packages: what is included, what is not, price ranges and timelines.",
+        sameAs);
 }
 
 <div class="page-narrow">
