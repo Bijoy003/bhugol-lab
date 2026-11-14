@@ -1,0 +1,27 @@
+# Normalize line endings
+* text=auto
+.gitattributes text eol=lf
+
+*.cs        text diff=csharp
+*.cshtml    text
+*.csproj    text
+*.props     text
+*.targets   text
+*.slnx      text
+*.json      text
+*.md        text
+*.yml       text
+*.yaml      text
+*.css       text
+*.js        text
+*.svg       text
+*.sh        text eol=lf
+Dockerfile  text eol=lf
+
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.ico       binary
+*.woff      binary
+*.woff2     binary

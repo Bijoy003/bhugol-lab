@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/BhugolLab.Web/BhugolLab.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/BhugolLab.Web.Tests/BhugolLab.Web.Tests.csproj" />
+  </Folder>
+</Solution>
