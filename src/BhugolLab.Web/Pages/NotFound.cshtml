@@ -1,0 +1,17 @@
+@page
+@{
+    ViewData["Title"] = "page not found";
+    ViewData["Description"] = "This page does not exist.";
+}
+<div class="page-narrow">
+    <h1>Page not found</h1>
+    <p>
+        Sorry — the page you were looking for doesn't exist or has moved.
+    </p>
+    <p>
+        <a asp-page="/Index">Back to the homepage</a> ·
+        <a asp-page="/Work/Index">Work</a> ·
+        <a asp-page="/Blog/Index">Blog</a> ·
+        <a asp-page="/Contact">Contact</a>
+    </p>
+</div>

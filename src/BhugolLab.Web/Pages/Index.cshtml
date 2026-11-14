@@ -1,10 +1,107 @@
 ﻿@page
+@using BhugolLab.Web.Options
+@using Microsoft.Extensions.Options
+@inject IOptions<SiteOptions> SiteOptionsAccessor
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    var site = SiteOptionsAccessor.Value;
+    ViewData["Title"] = "solo software consultancy";
+    ViewData["Description"] = "Bhugol Lab is the solo software consultancy of " + site.AuthorName +
+        ". TODO: one-sentence positioning — who you help and what changes for them.";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="hero">
+    <p class="eyebrow">Solo software consultancy</p>
+    <h1>
+        <span class="todo">TODO: “I help [CLIENT TYPE] achieve [OUTCOME] by building [THING]”</span>
+    </h1>
+    <p class="lead">
+        <span class="todo">TODO: one or two sentences for the [NICHE] audience — what you build and
+        what is measurably different afterwards.</span>
+    </p>
+    <div class="hero-actions">
+        <a class="button button-primary" asp-page="/Hire">Hire me</a>
+        <a class="button button-ghost" asp-page="/Work/Index">See my work</a>
+    </div>
+</section>
+
+<section class="section" aria-labelledby="work-heading">
+    <h2 id="work-heading" class="section-title">Selected work</h2>
+    <p class="section-subtitle">Case studies: the problem, what was built, and the outcome.</p>
+    <div class="grid grid-3">
+        <article class="card">
+            <h3><span class="todo">TODO: case study 1</span></h3>
+            <p class="muted"><span class="todo">TODO: one-line problem → outcome.</span></p>
+            <p class="mt-0"><a asp-page="/Work/Index">Read the case study</a></p>
+        </article>
+        <article class="card">
+            <h3><span class="todo">TODO: case study 2</span></h3>
+            <p class="muted"><span class="todo">TODO: one-line problem → outcome.</span></p>
+            <p class="mt-0"><a asp-page="/Work/Index">Read the case study</a></p>
+        </article>
+        <article class="card">
+            <h3><span class="todo">TODO: case study 3</span></h3>
+            <p class="muted"><span class="todo">TODO: one-line problem → outcome.</span></p>
+            <p class="mt-0"><a asp-page="/Work/Index">Read the case study</a></p>
+        </article>
+    </div>
+</section>
+
+<section class="section" aria-labelledby="services-heading">
+    <h2 id="services-heading" class="section-title">Services</h2>
+    <p class="section-subtitle">Fixed-scope packages with clear price ranges — no hourly billing surprises.</p>
+    <div class="grid grid-3">
+        <article class="card">
+            <h3><span class="todo">TODO: package 1</span></h3>
+            <p class="price"><span class="todo">TODO: price range</span></p>
+            <p class="muted"><span class="todo">TODO: who it's for and what's included.</span></p>
+        </article>
+        <article class="card">
+            <h3><span class="todo">TODO: package 2</span></h3>
+            <p class="price"><span class="todo">TODO: price range</span></p>
+            <p class="muted"><span class="todo">TODO: who it's for and what's included.</span></p>
+        </article>
+        <article class="card">
+            <h3><span class="todo">TODO: package 3</span></h3>
+            <p class="price"><span class="todo">TODO: price range</span></p>
+            <p class="muted"><span class="todo">TODO: who it's for and what's included.</span></p>
+        </article>
+    </div>
+    <p><a asp-page="/Services">See what's included in each package →</a></p>
+</section>
+
+<section class="section" aria-labelledby="about-heading">
+    <h2 id="about-heading" class="section-title">About Bhugol Lab</h2>
+    <div class="page-narrow">
+        <p>
+            Bhugol Lab is the solo consultancy of <strong>@site.AuthorName</strong>.
+            <span class="todo">TODO: short bio — years of experience, technology focus (.NET / ASP.NET Core),
+            and the kind of problems you solve. Keep it factual; no invented clients or metrics.</span>
+        </p>
+        <p class="muted">
+            Based in
+            @if (string.IsNullOrWhiteSpace(site.Location) || site.Location.Contains("TODO", StringComparison.OrdinalIgnoreCase))
+            {
+                <span class="todo">TODO: city, timezone</span>
+            }
+            else
+            {
+                @site.Location
+            }
+        </p>
+    </div>
+</section>
+
+<section class="section" aria-labelledby="cta-heading">
+    <div class="section-cta">
+        <h2 id="cta-heading"><span class="todo">TODO: closing offer — the concrete next step</span></h2>
+        <p class="muted">
+            <span class="todo">TODO: one or two sentences reducing the fear of reaching out
+            (free 30-minute call, no obligation, what happens after).</span>
+        </p>
+        <div class="hero-actions">
+            <a class="button button-primary" asp-page="/Hire">Hire me</a>
+            <a class="button button-ghost" asp-page="/Contact">Ask a question</a>
+        </div>
+    </div>
+</section>

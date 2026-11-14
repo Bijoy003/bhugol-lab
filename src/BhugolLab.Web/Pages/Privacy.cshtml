@@ -1,8 +1,79 @@
 ﻿@page
-@model PrivacyModel
+@using BhugolLab.Web.Options
+@using Microsoft.Extensions.Options
+@inject IOptions<EmailOptions> EmailOptionsAccessor
 @{
-    ViewData["Title"] = "Privacy Policy";
+    var email = EmailOptionsAccessor.Value;
+    ViewData["Title"] = "privacy";
+    ViewData["Description"] = "What data bhugol.dev collects, why, and how long it is kept. No advertising cookies, no third-party scripts.";
 }
-<h1>@ViewData["Title"]</h1>
+<div class="page-narrow prose">
+    <h1>Privacy</h1>
+    <p class="muted">Plain language, no legalese. Last updated: TODO: date.</p>
 
-<p>Use this page to detail your site's privacy policy.</p>
+    <h2>The short version</h2>
+    <ul>
+        <li>This site sets <strong>no advertising or analytics cookies</strong> and loads <strong>no third-party scripts</strong>.</li>
+        <li>The only personal data collected is what <strong>you type into the contact form</strong>.</li>
+        <li>Traffic is measured from <strong>aggregated Cloudflare zone analytics</strong> — server-side counts, not per-visitor tracking.</li>
+    </ul>
+
+    <h2>What is collected</h2>
+    <h3>Contact form</h3>
+    <p>
+        When you send the contact form, the following is stored in this site's database:
+        your name, email address, company (optional), your message, the page and
+        marketing source that led you here (UTM parameters and referrer, if present),
+        and the date and time of submission.
+    </p>
+    <h3>Technical logs</h3>
+    <p>
+        Like any website, the host and Cloudflare process technical request data
+        (IP address, browser type, pages requested) to serve the site and defend
+        against abuse. This is standard infrastructure processing, not behavioural
+        tracking.
+    </p>
+    <h3>Cookies</h3>
+    <p>
+        The only cookie this site sets is a strictly necessary session cookie for the
+        password-protected admin area (<code>/admin</code>). Visitors browsing the
+        public pages receive no cookies from this site.
+    </p>
+
+    <h2>Why it is collected</h2>
+    <p>
+        Contact form data is used for exactly one purpose: to reply to your inquiry and,
+        if it becomes a project, to run that project. The source fields tell me which of
+        my outreach efforts work, in aggregate. Nothing is sold, rented, or shared with
+        advertisers — there are no advertisers.
+    </p>
+
+    <h2>Who processes the data</h2>
+    <ul>
+        <li><strong>Cloudflare</strong> — DNS, CDN and DDoS protection for bhugol.dev.</li>
+        <li><strong>The hosting provider</strong> — <span class="todo">TODO: hosting target (e.g. Azure App Service, region)</span>, runs the site and its database.</li>
+        <li><strong>The email provider</strong> — <span class="todo">TODO: SMTP/Resend provider once configured</span>, delivers your message as an email notification.</li>
+    </ul>
+
+    <h2>How long data is kept</h2>
+    <p>
+        Contact form submissions are kept for <span class="todo">TODO: retention period,
+        e.g. 24 months</span> after the last reply, then deleted. Technical logs follow
+        the host's and Cloudflare's default retention.
+    </p>
+
+    <h2>Your rights</h2>
+    <p>
+        You can ask what is stored about you, request a copy, or request deletion at any
+        time. Email
+        @if (string.IsNullOrWhiteSpace(email.ToAddress))
+        {
+            <span class="todo">TODO: contact email address</span>
+        }
+        else
+        {
+            <a href="mailto:@email.ToAddress">@email.ToAddress</a>
+        }
+        and I will respond within 30 days.
+    </p>
+</div>

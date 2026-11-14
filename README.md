@@ -85,6 +85,10 @@ Settings that must exist (document every new one here):
 | `Email:ToAddress` | where lead notifications land; also the public contact address |
 | `Admin:Username` / `Admin:PasswordHash` | access to `/admin/leads` |
 | `Site:BaseUrl` | canonical URL, used for absolute links and sitemap |
+| `Site:AuthorName` | consultant display name (footer, hero, JSON-LD) |
+| `Site:GitHubUrl` / `Site:LinkedInUrl` | public profile links (footer) |
+| `Site:BookingUrl` | Cal.com / Calendly link for "Book a call" CTAs |
+| `Site:Location` | city and timezone shown in the footer |
 
 ## Database
 
