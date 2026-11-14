@@ -65,8 +65,8 @@ Never commit secrets. Locally:
 cd src/BhugolLab.Web
 dotnet user-secrets init
 dotnet user-secrets set "ConnectionStrings:Default" "Server=(localdb)\MSSQLLocalDB;Database=BhugolLab;Trusted_Connection=True;"
-dotnet user-secrets set "Email:Smtp:Username" "<personal-email@gmail.com>"
-dotnet user-secrets set "Email:Smtp:Password" "<gmail-app-password>"
+dotnet user-secrets set "Email:Smtp:Username" "<smtp-username>"
+dotnet user-secrets set "Email:Smtp:Password" "<smtp-password>"
 ```
 
 In production, set the same keys as environment variables (`ConnectionStrings__Default`,
@@ -77,12 +77,12 @@ Settings that must exist (document every new one here):
 | Key | Purpose |
 |---|---|
 | `ConnectionStrings:Default` | SQL Server connection string; falls back to SQLite when empty |
-| `Email:Provider` | `noop` locally, `smtp` in production (later: `resend`) |
-| `Email:Smtp:Host` / `Port` | `smtp.gmail.com` / `587` (STARTTLS) |
-| `Email:Smtp:Username` | personal Gmail address |
-| `Email:Smtp:Password` | Gmail **app password**, never the account password |
-| `Email:FromAddress` | personal email (used as the notification sender) |
-| `Email:ToAddress` | personal email (where lead notifications land) |
+| `Email:Provider` | `noop` locally, `smtp` or `resend` in production |
+| `Email:Smtp:Host` / `Port` | SMTP host and port (`587` with STARTTLS is the usual default) |
+| `Email:Smtp:Username` | SMTP username for the configured provider |
+| `Email:Smtp:Password` | SMTP credential — secret, never committed |
+| `Email:FromAddress` | sender address for lead notifications |
+| `Email:ToAddress` | where lead notifications land; also the public contact address |
 | `Admin:Username` / `Admin:PasswordHash` | access to `/admin/leads` |
 | `Site:BaseUrl` | canonical URL, used for absolute links and sitemap |
 

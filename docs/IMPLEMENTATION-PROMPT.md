@@ -26,8 +26,8 @@ A single, fast, credible site whose only business job is converting visitors int
 
 ### Placeholders (replace everywhere they appear)
 - Consultant display name: Bhugol <LASTNAME> (brand: Bhugol Lab)
-- Contact email: <PERSONAL EMAIL, e.g. yourname@gmail.com> (no custom-domain mailbox at launch)
-- Lead notifications: send to the same personal email
+- Contact email: <CONTACT EMAIL ADDRESS> (public contact and lead-notification recipient)
+- Lead notifications: sent to the same configured address
 - Booking link: <CAL.COM OR CALENDLY URL>
 - GitHub: github.com/<HANDLE>
 - LinkedIn: linkedin.com/in/<HANDLE>
@@ -119,7 +119,7 @@ Brand usage: the header wordmark is **Bhugol Lab**; the homepage hero and footer
 - Rate limit the contact endpoint: 3 requests per 10 minutes per IP, plus a global limiter.
 - EF Core: `EnableRetryOnFailure(3, TimeSpan.FromSeconds(2), null)`; migrations applied explicitly (no `EnsureCreated()`); `Lead` entity with Id, Name, Email, Company, Message, Source, Referrer, CreatedAt, Status.
 - Support SQL Server via connection string; use `Authentication=Active Directory Default` if configured, otherwise fall back to a connection string from user-secrets/env. Include SQLite as a local-development fallback so the project runs without SQL Server installed.
-- `IEmailSender` abstraction with two implementations: SMTP (Gmail app password in development and at launch, configurable to Resend/Brevo later via config only) and a no-op logger for tests. Never send email inline on the request thread without a timeout, and never let a failed notification lose the lead — persist first, then notify.
+- `IEmailSender` abstraction with two implementations: SMTP (host/port/credentials via config; switchable to Resend/Brevo via config only) and a no-op logger for tests. Never send email inline on the request thread without a timeout, and never let a failed notification lose the lead — persist first, then notify.
 - Email is optional infrastructure: if `Email:Provider` is empty or `noop`, the contact form must still succeed and the lead must still be listed in `/admin/leads`.
 - Security headers middleware: HSTS, `X-Content-Type-Options`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`, and a CSP that allows only what the site uses (self, plus your analytics and Cal.com embed if used).
 - Add `/healthz` returning 200 and a `/robots.txt` that disallows `/admin`.
@@ -165,9 +165,9 @@ Brand usage: the header wordmark is **Bhugol Lab**; the homepage hero and footer
 
 ## Notes before you paste
 
-- **Must fill in:** personal email, niche/ICP, package names + price ranges, booking link, GitHub/LinkedIn handles, hosting target. The homepage and `/hire` copy depend on the niche and prices.
-- **Email is deliberately minimal at launch:** use a personal email (e.g. Gmail) as the public contact address and as the lead-notification recipient. No custom-domain mailbox, no mailbox subscription, no SPF/DKIM/DMARC yet. Sending uses Gmail SMTP with an app password stored in user-secrets/env. The `IEmailSender` abstraction must keep a later switch to Resend/Brevo or a real `hi@bhugol.dev` mailbox a config-only change.
-- **Free upgrade path, documented but not implemented:** Cloudflare Email Routing can receive `hi@bhugol.dev` and forward to Gmail at $0, and Resend can send from a verified domain without a mailbox. Add it only when replies from the branded address start mattering.
+- **Must fill in:** contact email address, niche/ICP, package names + price ranges, booking link, GitHub/LinkedIn handles, hosting target. The homepage and `/hire` copy depend on the niche and prices.
+- **Email is config-driven at launch:** the public contact address and lead-notification recipient are whatever `Email:ToAddress` is set to; SMTP credentials live in user-secrets/env, never in `appsettings.json`. The `IEmailSender` abstraction must keep a later switch to Resend/Brevo (or any other provider) a config-only change.
+- **Branded-address path, documented but not implemented:** Cloudflare Email Routing can receive `hi@bhugol.dev` and forward it anywhere at $0, and Resend can send from a verified domain without a mailbox. Add it only when replies from the branded address start mattering — DNS records and provider config only, no app changes.
 - **If you don't have a niche yet:** tell the new chat to use `TODO:` placeholders for the ICP and prices, and build everything else around them.
 - **Naming already decided:** brand **Bhugol Lab**, repo `bhugol-lab`, solution `BhugolLab`, project `BhugolLab.Web`, namespace `BhugolLab.Web`.
 - **Domain decisions already made:** canonical site on `bhugol.dev` (apex), `www` 301s to apex. Marketing pages on paths, not subdomains. `bhugol.com` is held by someone else and `bhugollabs.com` is taken — don't pursue either.
