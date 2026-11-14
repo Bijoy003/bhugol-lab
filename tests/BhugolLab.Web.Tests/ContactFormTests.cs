@@ -1,6 +1,6 @@
+using BhugolLab.Web.Data.Entities;
+using BhugolLab.Web.Interfaces;
 using Microsoft.AspNetCore.Mvc.Testing;
-using BhugolLab.Web.Data;
-using BhugolLab.Web.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BhugolLab.Web.Tests;
@@ -80,7 +80,7 @@ public class ContactFormTests(WebAppFactory factory) : IClassFixture<WebAppFacto
     private async Task<IReadOnlyList<Lead>> LeadsAsync()
     {
         using var scope = _factory.Services.CreateScope();
-        var store = scope.ServiceProvider.GetRequiredService<ILeadStore>();
-        return await store.ListAsync();
+        var repository = scope.ServiceProvider.GetRequiredService<ILeadRepository>();
+        return await repository.ListAsync();
     }
 }

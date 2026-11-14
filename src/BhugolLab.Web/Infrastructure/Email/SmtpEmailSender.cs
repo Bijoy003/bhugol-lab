@@ -1,8 +1,9 @@
 using System.Net;
 using System.Net.Mail;
+using BhugolLab.Web.Interfaces;
 using BhugolLab.Web.Options;
 
-namespace BhugolLab.Web.Services;
+namespace BhugolLab.Web.Infrastructure.Email;
 
 /// <summary>
 /// Sends via any SMTP provider (host/port/credentials from configuration; 587 + STARTTLS

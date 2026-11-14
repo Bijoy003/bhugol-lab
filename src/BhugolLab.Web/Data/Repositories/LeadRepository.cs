@@ -1,9 +1,10 @@
-using BhugolLab.Web.Data;
+using BhugolLab.Web.Data.Entities;
+using BhugolLab.Web.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace BhugolLab.Web.Services;
+namespace BhugolLab.Web.Data.Repositories;
 
-public sealed class EfLeadStore(AppDbContext dbContext) : ILeadStore
+public sealed class LeadRepository(AppDbContext dbContext) : ILeadRepository
 {
     public async Task<Lead> AddAsync(Lead lead, CancellationToken cancellationToken = default)
     {

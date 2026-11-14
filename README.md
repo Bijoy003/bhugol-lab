@@ -41,6 +41,11 @@ bhugol-lab/
   docs/                      spec, deployment and DNS notes
   src/
     BhugolLab.Web/           the only web app
+      Interfaces/            ports: IEmailSender, ILeadRepository
+      Services/              application services: MarkdownService, Notifications/
+      Infrastructure/        adapters & helpers: Email/, Security/, Seo/
+      Data/                  AppDbContext, Entities/, Repositories/, Migrations/
+      Models/ Options/ Middleware/ Pages/
   tests/
     BhugolLab.Web.Tests/     xUnit + WebApplicationFactory
 ```
@@ -93,7 +98,7 @@ Settings that must exist (document every new one here):
 ## Database
 
 ```powershell
-dotnet ef migrations add <Name> --project src/BhugolLab.Web
+dotnet ef migrations add <Name> --project src/BhugolLab.Web --output-dir Data/Migrations
 dotnet ef database update --project src/BhugolLab.Web
 ```
 

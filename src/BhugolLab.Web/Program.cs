@@ -1,8 +1,13 @@
 using System.Threading.RateLimiting;
 using BhugolLab.Web.Data;
+using BhugolLab.Web.Data.Repositories;
+using BhugolLab.Web.Infrastructure.Email;
+using BhugolLab.Web.Infrastructure.Security;
+using BhugolLab.Web.Interfaces;
 using BhugolLab.Web.Middleware;
 using BhugolLab.Web.Options;
 using BhugolLab.Web.Services;
+using BhugolLab.Web.Services.Notifications;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.RateLimiting;
@@ -53,7 +58,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
             sql.EnableRetryOnFailure(3, TimeSpan.FromSeconds(2), null));
     }
 });
-builder.Services.AddScoped<ILeadStore, EfLeadStore>();
+builder.Services.AddScoped<ILeadRepository, LeadRepository>();
 
 // Email: provider is configuration only. Unknown values fail fast at startup.
 var emailProvider = builder.Configuration[$"{EmailOptions.SectionName}:Provider"];

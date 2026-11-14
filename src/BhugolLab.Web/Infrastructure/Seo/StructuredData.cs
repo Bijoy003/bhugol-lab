@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace BhugolLab.Web.Services;
+namespace BhugolLab.Web.Infrastructure.Seo;
 
 /// <summary>Builds schema.org JSON-LD graphs. Serialized with System.Text.Json, which escapes
 /// unsafe characters, so the output is safe to embed in a script block.</summary>

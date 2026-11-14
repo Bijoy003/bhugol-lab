@@ -1,6 +1,7 @@
-using BhugolLab.Web.Data;
+using BhugolLab.Web.Data.Entities;
+using BhugolLab.Web.Interfaces;
 using BhugolLab.Web.Models;
-using BhugolLab.Web.Services;
+using BhugolLab.Web.Services.Notifications;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.RateLimiting;
@@ -9,7 +10,7 @@ namespace BhugolLab.Web.Pages;
 
 [EnableRateLimiting("contact")]
 public class ContactModel(
-    ILeadStore leads,
+    ILeadRepository leads,
     LeadNotificationQueue queue,
     ILogger<ContactModel> logger) : PageModel
 {

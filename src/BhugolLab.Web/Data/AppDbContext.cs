@@ -1,3 +1,4 @@
+using BhugolLab.Web.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BhugolLab.Web.Data;

@@ -1,3 +1,4 @@
+using BhugolLab.Web.Infrastructure.Seo;
 using BhugolLab.Web.Models;
 using BhugolLab.Web.Options;
 using BhugolLab.Web.Services;

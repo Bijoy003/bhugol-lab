@@ -1,4 +1,4 @@
-using BhugolLab.Web.Services;
+using BhugolLab.Web.Infrastructure.Security;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 

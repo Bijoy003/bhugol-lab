@@ -1,7 +1,8 @@
+using BhugolLab.Web.Interfaces;
 using BhugolLab.Web.Options;
 using Microsoft.Extensions.Options;
 
-namespace BhugolLab.Web.Services;
+namespace BhugolLab.Web.Services.Notifications;
 
 /// <summary>
 /// Background worker that sends lead notification emails off the request thread,
@@ -36,7 +37,7 @@ public sealed class LeadNotifier(
     private async Task NotifyAsync(Guid leadId, CancellationToken stoppingToken)
     {
         using var scope = scopeFactory.CreateScope();
-        var store = scope.ServiceProvider.GetRequiredService<ILeadStore>();
+        var leads = scope.ServiceProvider.GetRequiredService<ILeadRepository>();
         var sender = scope.ServiceProvider.GetRequiredService<IEmailSender>();
         var options = scope.ServiceProvider.GetRequiredService<IOptions<EmailOptions>>().Value;
 
@@ -46,7 +47,7 @@ public sealed class LeadNotifier(
             return;
         }
 
-        var lead = await store.FindAsync(leadId, stoppingToken);
+        var lead = await leads.FindAsync(leadId, stoppingToken);
         if (lead is null)
         {
             logger.LogWarning("Lead {LeadId} not found for notification", leadId);

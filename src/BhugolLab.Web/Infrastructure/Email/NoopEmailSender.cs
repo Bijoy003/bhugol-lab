@@ -1,4 +1,6 @@
-namespace BhugolLab.Web.Services;
+using BhugolLab.Web.Interfaces;
+
+namespace BhugolLab.Web.Infrastructure.Email;
 
 /// <summary>
 /// Default for local development and tests: logs instead of sending.

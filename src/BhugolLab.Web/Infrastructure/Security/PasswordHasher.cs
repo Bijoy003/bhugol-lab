@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace BhugolLab.Web.Services;
+namespace BhugolLab.Web.Infrastructure.Security;
 
 /// <summary>
 /// PBKDF2-SHA256 password hashing with a per-password salt.

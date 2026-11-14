@@ -87,8 +87,10 @@ Create a single web project, `BhugolLab.Web`, with this shape:
 - `Program.cs`
 - `Pages/` — `Index`, `Hire`, `Services`, `Contact`, `ContactThanks`, `Privacy`, `NotFound`, plus `Work/Index`, `Work/Detail`, `Blog/Index`, `Blog/Post`, `Blog/Tag`, `Admin/Login`, `Admin/Leads`
 - `Content/posts/*.md` — blog source with YAML front matter (title, description, date, tags, draft)
-- `Services/` — `MarkdownService`, `IEmailSender` + `EmailSender` (Resend or SMTP), `ILeadStore` + `EfLeadStore`
-- `Data/` — `AppDbContext`, `Lead` entity, migrations
+- `Interfaces/` — `IEmailSender`, `ILeadRepository`
+- `Services/` — `MarkdownService`, `Notifications/` (`LeadNotifier` background worker + `LeadNotificationQueue`)
+- `Infrastructure/` — `Email/` (SMTP + no-op senders), `Security/` (`PasswordHasher`), `Seo/` (`OgImages`, `StructuredData`)
+- `Data/` — `AppDbContext`, `Entities/` (`Lead`), `Repositories/` (`LeadRepository`), `Migrations/`
 - `wwwroot/` — CSS, fonts, images, favicon, OG images
 - `Dockerfile`, `.dockerignore`
 - `.github/workflows/ci.yml`

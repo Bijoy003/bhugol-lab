@@ -1,9 +1,9 @@
-using BhugolLab.Web.Data;
+using BhugolLab.Web.Data.Entities;
 
-namespace BhugolLab.Web.Services;
+namespace BhugolLab.Web.Interfaces;
 
 /// <summary>Persistence for contact-form leads. Implemented by EF Core; swappable in tests.</summary>
-public interface ILeadStore
+public interface ILeadRepository
 {
     Task<Lead> AddAsync(Lead lead, CancellationToken cancellationToken = default);
 

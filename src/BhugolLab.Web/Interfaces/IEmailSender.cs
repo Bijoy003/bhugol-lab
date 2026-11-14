@@ -1,4 +1,4 @@
-namespace BhugolLab.Web.Services;
+namespace BhugolLab.Web.Interfaces;
 
 /// <summary>
 /// Sends notification email. Implementations: SMTP and a no-op logger. Switching providers

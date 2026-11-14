@@ -1,4 +1,4 @@
-namespace BhugolLab.Web.Data;
+namespace BhugolLab.Web.Data.Entities;
 
 /// <summary>A contact-form submission. The only table in the database.</summary>
 public class Lead
@@ -23,16 +23,4 @@ public class Lead
     public DateTime CreatedAt { get; set; }
 
     public string Status { get; set; } = LeadStatus.New;
-}
-
-public static class LeadStatus
-{
-    public const string New = "New";
-    public const string Contacted = "Contacted";
-    public const string Qualified = "Qualified";
-    public const string Won = "Won";
-    public const string Lost = "Lost";
-    public const string Spam = "Spam";
-
-    public static readonly string[] All = [New, Contacted, Qualified, Won, Lost, Spam];
 }

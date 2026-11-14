@@ -1,6 +1,6 @@
 using System.Threading.Channels;
 
-namespace BhugolLab.Web.Services;
+namespace BhugolLab.Web.Services.Notifications;
 
 /// <summary>
 /// In-process queue of lead ids awaiting a notification email. The contact request
