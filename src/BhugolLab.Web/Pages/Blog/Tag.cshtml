@@ -1,0 +1,26 @@
+@page "/blog/tag/{tag}"
+@model BhugolLab.Web.Pages.Blog.TagModel
+
+<div class="page-narrow">
+    <h1>Posts tagged “@Model.Tag”</h1>
+    @if (Model.Items.Count == 0)
+    {
+        <p>No published posts carry this tag. <a asp-page="/Blog/Index">See all posts</a>.</p>
+    }
+    else
+    {
+        <ul class="post-list">
+            @foreach (var item in Model.Items)
+            {
+                <li>
+                    <h3><a asp-page="/Blog/Post" asp-route-slug="@item.Slug">@item.Title</a></h3>
+                    <p class="post-meta">
+                        <time datetime="@item.Date.ToString("yyyy-MM-dd")">@item.Date.ToString("MMMM d, yyyy")</time>
+                    </p>
+                    <p>@item.Description</p>
+                </li>
+            }
+        </ul>
+        <p><a asp-page="/Blog/Index">← All posts</a></p>
+    }
+</div>

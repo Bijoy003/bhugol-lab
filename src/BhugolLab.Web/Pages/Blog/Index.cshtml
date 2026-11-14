@@ -1,9 +1,46 @@
-@page
+@page "/blog"
+@model BhugolLab.Web.Pages.Blog.IndexModel
 @{
     ViewData["Title"] = "blog";
-    ViewData["Description"] = "Writing from Bhugol Lab on .NET, software architecture and consulting.";
+    ViewData["Description"] = "Writing from Bhugol Lab on .NET, ASP.NET Core, architecture and running a solo consultancy.";
 }
+
 <div class="page-narrow">
     <h1>Blog</h1>
-    <p class="lead">TODO: posts will be listed here.</p>
+    <p class="lead">Notes on .NET, web architecture and running a one-person consultancy.
+    Also available as an <a href="/rss.xml">RSS feed</a>.</p>
+
+    @if (Model.Tags.Count > 0)
+    {
+        <ul class="tag-list" aria-label="Browse by tag">
+            @foreach (var tag in Model.Tags)
+            {
+                <li><a class="tag" asp-page="/Blog/Tag" asp-route-tag="@tag">@tag</a></li>
+            }
+        </ul>
+    }
 </div>
+
+@if (Model.Items.Count == 0)
+{
+    <p class="todo-block">TODO: no published posts yet — add Markdown files to <code>Content/posts</code>.</p>
+}
+else
+{
+    <ul class="post-list">
+        @foreach (var item in Model.Items)
+        {
+            <li>
+                <h3><a asp-page="/Blog/Post" asp-route-slug="@item.Slug">@item.Title</a></h3>
+                <p class="post-meta">
+                    <time datetime="@item.Date.ToString("yyyy-MM-dd")">@item.Date.ToString("MMMM d, yyyy")</time>
+                    @if (item.Tags.Count > 0)
+                    {
+                        <text> · @string.Join(" · ", item.Tags)</text>
+                    }
+                </p>
+                <p>@item.Description</p>
+            </li>
+        }
+    </ul>
+}

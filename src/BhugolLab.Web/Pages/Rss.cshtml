@@ -1,0 +1,7 @@
+@page "/rss.xml"
+@model BhugolLab.Web.Pages.RssModel
+@{
+    Layout = null;
+    Response.ContentType = "application/rss+xml; charset=utf-8";
+}
+@Html.Raw(Model.Xml)
