@@ -29,21 +29,22 @@
     <h2 id="work-heading" class="section-title">Selected work</h2>
     <p class="section-subtitle">Case studies: the problem, what was built, and the outcome.</p>
     <div class="grid grid-3">
-        <article class="card">
-            <h3><span class="todo">TODO: case study 1</span></h3>
-            <p class="muted"><span class="todo">TODO: one-line problem → outcome.</span></p>
-            <p class="mt-0"><a asp-page="/Work/Index">Read the case study</a></p>
-        </article>
-        <article class="card">
-            <h3><span class="todo">TODO: case study 2</span></h3>
-            <p class="muted"><span class="todo">TODO: one-line problem → outcome.</span></p>
-            <p class="mt-0"><a asp-page="/Work/Index">Read the case study</a></p>
-        </article>
-        <article class="card">
-            <h3><span class="todo">TODO: case study 3</span></h3>
-            <p class="muted"><span class="todo">TODO: one-line problem → outcome.</span></p>
-            <p class="mt-0"><a asp-page="/Work/Index">Read the case study</a></p>
-        </article>
+        @foreach (var item in Model.CaseStudies)
+        {
+            <article class="card">
+                <h3><a asp-page="/Work/Detail" asp-route-slug="@item.Slug">@item.Title</a></h3>
+                <p class="muted">@item.Description</p>
+                <p class="mt-0"><a asp-page="/Work/Detail" asp-route-slug="@item.Slug">Read the case study</a></p>
+            </article>
+        }
+        @for (var i = Model.CaseStudies.Count; i < 3; i++)
+        {
+            <article class="card">
+                <h3><span class="todo">TODO: case study @(i + 1)</span></h3>
+                <p class="muted"><span class="todo">TODO: one-line problem → outcome.</span></p>
+                <p class="mt-0"><a asp-page="/Work/Index">Read the case study</a></p>
+            </article>
+        }
     </div>
 </section>
 

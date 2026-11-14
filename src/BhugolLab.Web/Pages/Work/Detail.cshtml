@@ -1,0 +1,39 @@
+@page "/work/{slug}"
+@model BhugolLab.Web.Pages.Work.DetailModel
+@{
+    var item = Model.Item;
+}
+
+<article class="page-narrow">
+    <header class="post-header">
+        <p class="eyebrow">Case study</p>
+        <h1>@item.Title</h1>
+        <p class="post-meta">
+            <time datetime="@item.Date.ToString("yyyy-MM-dd")">@item.Date.ToString("MMMM yyyy")</time>
+            @if (item.Tags.Count > 0)
+            {
+                <text> · @string.Join(" · ", item.Tags)</text>
+            }
+        </p>
+    </header>
+
+    @if (item.Toc.Count > 0)
+    {
+        <nav class="toc" aria-label="Table of contents">
+            <p class="toc-title">On this page</p>
+            <ol>
+                @foreach (var entry in item.Toc)
+                {
+                    <li class="toc-level-@entry.Level"><a href="#@entry.Id">@entry.Text</a></li>
+                }
+            </ol>
+        </nav>
+    }
+
+    <div class="prose">
+        @Html.Raw(item.Html)
+    </div>
+
+    <hr />
+    <p><a asp-page="/Work/Index">← All case studies</a></p>
+</article>

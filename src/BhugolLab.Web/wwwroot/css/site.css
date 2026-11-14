@@ -644,6 +644,10 @@ table.data select {
   margin-bottom: 0.2rem;
 }
 
+.toc li.toc-level-3 {
+  margin-left: 1.2rem;
+}
+
 /* ---------- Tags ---------- */
 .tag-list {
   display: flex;
@@ -706,6 +710,26 @@ table.data select {
 /* ---------- Misc ---------- */
 .muted {
   color: var(--color-muted);
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .small {

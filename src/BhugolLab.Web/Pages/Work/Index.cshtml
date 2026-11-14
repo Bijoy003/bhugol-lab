@@ -1,9 +1,35 @@
-@page
+@page "/work"
+@model BhugolLab.Web.Pages.Work.IndexModel
 @{
     ViewData["Title"] = "work and case studies";
-    ViewData["Description"] = "Case studies from Bhugol Lab: problem, constraints, what was built, stack and outcome.";
+    ViewData["Description"] = "Case studies from Bhugol Lab: the problem, constraints, what was built, the stack and the outcome.";
 }
+
 <div class="page-narrow">
     <h1>Work</h1>
-    <p class="lead">TODO: case studies will be listed here.</p>
+    <p class="lead">Case studies: the problem, the constraints, what was built, and what changed afterwards.</p>
 </div>
+
+@if (Model.Items.Count == 0)
+{
+    <p class="todo-block">TODO: no published case studies yet — add Markdown files to <code>Content/work</code>.</p>
+}
+else
+{
+    <ul class="post-list">
+        @foreach (var item in Model.Items)
+        {
+            <li>
+                <h3><a asp-page="/Work/Detail" asp-route-slug="@item.Slug">@item.Title</a></h3>
+                <p class="post-meta">
+                    <time datetime="@item.Date.ToString("yyyy-MM-dd")">@item.Date.ToString("MMMM yyyy")</time>
+                    @if (item.Tags.Count > 0)
+                    {
+                        <text> · @string.Join(" · ", item.Tags)</text>
+                    }
+                </p>
+                <p>@item.Description</p>
+            </li>
+        }
+    </ul>
+}

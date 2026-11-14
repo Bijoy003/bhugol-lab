@@ -1,9 +1,11 @@
-using BhugolLab.Web.Middleware;
+﻿using BhugolLab.Web.Middleware;
 using BhugolLab.Web.Options;
+using BhugolLab.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
+builder.Services.AddSingleton<MarkdownService>();
 builder.Services.AddHsts(options =>
 {
     options.MaxAge = TimeSpan.FromDays(365);
