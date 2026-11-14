@@ -80,6 +80,6 @@ recipient.
 - [ ] `/admin/leads` requires auth; `/admin` is disallowed in `robots.txt`
 - [ ] Lighthouse mobile ≥ 95 on `/` and `/hire`
 - [ ] `/hire` OG tags render correctly in WhatsApp, Slack, and LinkedIn
-- [ ] Cloudflare Web Analytics receiving page views
+- [ ] Cloudflare dashboard zone analytics shows traffic for bhugol.dev (no on-site beacon)
 - [ ] UptimeRobot (or similar) monitoring `/healthz`
 - [ ] Budget alert configured on the cloud account

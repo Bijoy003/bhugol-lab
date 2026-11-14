@@ -111,7 +111,7 @@ Brand usage: the header wordmark is **Bhugol Lab**; the homepage hero and footer
 
 **`/admin/login`** and **`/admin/leads`** — cookie auth with a single admin user seeded from configuration. The login page is a username/password form with server-side validation, antiforgery, and accessible error messages; logout is a POST action. `/admin/leads` is a simple table of leads sorted by date with a status dropdown. Keep it minimal.
 
-**`/privacy`** — plain-language privacy note covering the form data, analytics, and retention.
+**`/privacy`** — plain-language privacy note covering the form data, traffic measurement (Cloudflare zone analytics — no cookies, no third-party scripts on the site), and retention.
 
 ### Step 4 — Technical requirements
 - Middleware order matters: `UseForwardedHeaders()` before `UseHttpsRedirection()`, `UseRateLimiter()`, and any IP-based logic. The app runs behind Cloudflare, so forwarded headers must be honored or rate limiting will treat all traffic as one client.
@@ -121,7 +121,7 @@ Brand usage: the header wordmark is **Bhugol Lab**; the homepage hero and footer
 - Support SQL Server via connection string; use `Authentication=Active Directory Default` if configured, otherwise fall back to a connection string from user-secrets/env. Include SQLite as a local-development fallback so the project runs without SQL Server installed.
 - `IEmailSender` abstraction with two implementations: SMTP (host/port/credentials via config; switchable to Resend/Brevo via config only) and a no-op logger for tests. Never send email inline on the request thread without a timeout, and never let a failed notification lose the lead — persist first, then notify.
 - Email is optional infrastructure: if `Email:Provider` is empty or `noop`, the contact form must still succeed and the lead must still be listed in `/admin/leads`.
-- Security headers middleware: HSTS, `X-Content-Type-Options`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`, and a CSP that allows only what the site uses (self, plus your analytics and Cal.com embed if used).
+- Security headers middleware: HSTS, `X-Content-Type-Options`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`, and a static self-only CSP: `default-src 'self'; img-src 'self' data: https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'`. No third-party scripts at launch; extend the allow-list only when a third-party embed is actually added.
 - Add `/healthz` returning 200 and a `/robots.txt` that disallows `/admin`.
 - Structured logging; log every lead submission (id only, no message body) and every email failure.
 - Config via `IOptions` bound from `appsettings.json`, overridable by environment variables. Document every setting in the README.
@@ -172,5 +172,6 @@ Brand usage: the header wordmark is **Bhugol Lab**; the homepage hero and footer
 - **Naming already decided:** brand **Bhugol Lab**, repo `bhugol-lab`, solution `BhugolLab`, project `BhugolLab.Web`, namespace `BhugolLab.Web`.
 - **Domain decisions already made:** canonical site on `bhugol.dev` (apex), `www` 301s to apex. Marketing pages on paths, not subdomains. `bhugol.com` is held by someone else and `bhugollabs.com` is taken — don't pursue either.
 - **Stack decisions already made:** single Razor Pages project, .NET 10, Markdig, EF Core + SQL Server (SQLite fallback locally), Docker, Cloudflare DNS/CDN.
+- **Analytics already decided:** no on-site analytics script or cookies at launch — traffic is read from the Cloudflare dashboard (zone analytics), so the CSP stays self-only. Add a beacon (and its CSP entry) only when page-level data starts mattering.
 - **Hosting:** the database is SQL Server in every deployment (SQLite is a local-dev fallback only). Azure App Service/Container Apps + Azure SQL free tier, or any Docker host + a SQL Server instance the host can reach.
 - **Placeholder hygiene:** the "no fabricated content" rule is deliberate. Do not let the agent invent client names, metrics, or testimonials.
