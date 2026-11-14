@@ -1,0 +1,27 @@
+@page "/admin/login"
+@model BhugolLab.Web.Pages.Admin.LoginModel
+@{
+    ViewData["Title"] = "admin sign in";
+    ViewData["Description"] = "Sign in to the Bhugol Lab lead list.";
+}
+
+<div class="page-narrow">
+    <h1>Admin sign in</h1>
+
+    <form method="post">
+        <div asp-validation-summary="All" class="validation-summary-errors" role="alert"></div>
+
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input id="username" name="username" type="text" value="@Model.Username"
+                   autocomplete="username" required />
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" required />
+        </div>
+
+        <button type="submit" class="button button-primary">Sign in</button>
+    </form>
+</div>

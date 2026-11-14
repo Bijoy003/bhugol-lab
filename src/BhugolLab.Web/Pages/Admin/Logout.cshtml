@@ -1,0 +1,11 @@
+@page "/admin/logout"
+@model BhugolLab.Web.Pages.Admin.LogoutModel
+@{
+    // Logout is a POST-only endpoint (see the sign-out form on /admin/leads).
+    ViewData["Title"] = "signed out";
+}
+
+<div class="page-narrow">
+    <h1>Signed out</h1>
+    <p><a asp-page="/Admin/Login">Sign in again</a></p>
+</div>

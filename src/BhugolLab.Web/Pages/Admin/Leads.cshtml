@@ -1,0 +1,62 @@
+@page "/admin/leads"
+@model BhugolLab.Web.Pages.Admin.LeadsModel
+@{
+    ViewData["Title"] = "leads";
+    ViewData["Description"] = "Contact form submissions.";
+}
+
+<div class="header-row">
+    <h1>Leads</h1>
+    <form method="post" asp-page="/Admin/Logout">
+        <button type="submit" class="button button-ghost button-small">Sign out</button>
+    </form>
+</div>
+
+@if (Model.Leads.Count == 0)
+{
+    <p class="muted">No leads yet. Submissions from the contact form appear here, newest first.</p>
+}
+else
+{
+    <div class="table-wrap">
+        <table class="data">
+            <thead>
+                <tr>
+                    <th scope="col">Received (UTC)</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Company</th>
+                    <th scope="col">Source</th>
+                    <th scope="col">Message</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var lead in Model.Leads)
+                {
+                    <tr>
+                        <td><time datetime="@lead.CreatedAt.ToString("o")">@lead.CreatedAt.ToString("yyyy-MM-dd HH:mm")</time></td>
+                        <td>@lead.Name</td>
+                        <td><a href="mailto:@lead.Email">@lead.Email</a></td>
+                        <td>@(lead.Company ?? "—")</td>
+                        <td class="small">@(lead.Source ?? "—")</td>
+                        <td class="wrap-message">@lead.Message</td>
+                        <td>
+                            <form method="post" asp-page-handler="Status">
+                                <input type="hidden" name="id" value="@lead.Id" />
+                                <label class="visually-hidden" for="status-@lead.Id">Status for @lead.Name</label>
+                                <select id="status-@lead.Id" name="status">
+                                    @foreach (var status in Model.Statuses)
+                                    {
+                                        <!option value="@status" selected="@(status == lead.Status)">@status</!option>
+                                    }
+                                </select>
+                                <button type="submit" class="button button-ghost button-small">Save</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
